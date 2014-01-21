@@ -20,8 +20,8 @@ Installation
 Requirements
 ------------
 
-.. |Build Status| image:: https://api.travis-ci.org/bespohk/watson-common.png?branch=master
-   :target: https://travis-ci.org/bespohk/watson-common
+.. |Build Status| image:: https://api.travis-ci.org/Bespohk/watson-common.png?branch=master
+   :target: https://travis-ci.org/Bespohk/watson-common
 .. |Coverage Status| image:: https://coveralls.io/repos/bespohk/watson-common/badge.png
    :target: https://coveralls.io/r/bespohk/watson-common
 .. |Pypi| image:: https://pypip.in/v/watson-common/badge.png
