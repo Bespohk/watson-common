@@ -10,7 +10,7 @@ Docs <http://watson-common.readthedocs.org/>`__.
 Build Status
 ^^^^^^^^^^^^
 
-|Build Status| |Coverage Status| |Pypi|
+|Build Status| |Coverage Status| |Version| |Downloads| |Licence|
 
 Installation
 ------------
@@ -24,5 +24,9 @@ Requirements
    :target: https://travis-ci.org/Bespohk/watson-common
 .. |Coverage Status| image:: https://coveralls.io/repos/bespohk/watson-common/badge.png
    :target: https://coveralls.io/r/bespohk/watson-common
-.. |Pypi| image:: https://pypip.in/v/watson-common/badge.png
-   :target: https://crate.io/packages/watson-common/
+.. |Version| image:: https://pypip.in/v/watson-common/badge.png
+   :target: https://pypi.python.org/pypi/watson-common/
+.. |Downloads| image:: https://pypip.in/d/watson-common/badge.png
+   :target: https://pypi.python.org/pypi/watson-common/
+.. |Licence| image:: https://pypip.in/license/watson-common/badge.png
+   :target: https://pypi.python.org/pypi/watson-common/
