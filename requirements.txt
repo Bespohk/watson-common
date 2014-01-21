@@ -1,0 +1,7 @@
+# Unit Test
+pytest
+pytest-cov
+coverage
+coveralls
+
+# Watson
