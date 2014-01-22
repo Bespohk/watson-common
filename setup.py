@@ -64,7 +64,7 @@ with open(os.path.join(path, 'requirements.txt')) as f:
 setup(
     name='watson-common',
     version=watson.common.__version__,
-    url='http://github.com/bespohk/watson-common',
+    url='http://github.com/watsonpy/watson-common',
     description='Useful common utility functions and classes.',
     long_description=readme,
 

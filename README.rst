@@ -20,10 +20,10 @@ Installation
 Requirements
 ------------
 
-.. |Build Status| image:: https://api.travis-ci.org/Bespohk/watson-common.png?branch=master
-   :target: https://travis-ci.org/Bespohk/watson-common
-.. |Coverage Status| image:: https://coveralls.io/repos/bespohk/watson-common/badge.png
-   :target: https://coveralls.io/r/bespohk/watson-common
+.. |Build Status| image:: https://api.travis-ci.org/watsonpy/watson-common.png?branch=master
+   :target: https://travis-ci.org/watsonpy/watson-common
+.. |Coverage Status| image:: https://coveralls.io/repos/watsonpy/watson-common/badge.png
+   :target: https://coveralls.io/r/watsonpy/watson-common
 .. |Version| image:: https://pypip.in/v/watson-common/badge.png
    :target: https://pypi.python.org/pypi/watson-common/
 .. |Downloads| image:: https://pypip.in/d/watson-common/badge.png
