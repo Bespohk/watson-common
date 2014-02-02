@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from copy import deepcopy, copy
-from collections import OrderedDict
 from types import ModuleType
 
 
@@ -64,7 +63,7 @@ def module_to_dict(module, ignore_starts_with=''):
     return new_dict
 
 
-class MultiDict(OrderedDict):
+class MultiDict(dict):
 
     """A dictionary type that can contain multiple items for a single key.
 
@@ -103,20 +102,35 @@ class MultiDict(OrderedDict):
 
     def __setitem__(self, key, value, replace=False):
         # See MultiDict.set for more information.
-        if key in self and not replace:
-            if not isinstance(self[key], list):
+        if replace and key in self:
+            del self[key]
+        if key in self:
+            try:
+                self[key].append(value)
+            except:
                 existing = [self[key]]
-            else:
-                existing = self[key]
-            existing.append(value)
-            new_value = existing
-        else:
-            new_value = value
+                existing.append(value)
+                value = existing
+        dict.__setitem__(self, key, value)
 
-        super(MultiDict, self).__setitem__(key, new_value)
+    def update(self, a_dict):
+        for key, value in a_dict.items():
+            self[key] = value
 
-    def __getitem__(self, key, default=None):
-        return self.get(key, default)
+    def copy(self):
+        return self.__class__(self)
+
+    def deepcopy(self, memo=None):
+        return self.__class__(deepcopy(self._flattened(), memo))
+
+    def _flattened(self):
+        return dict(((key, value) for key, value in self.items()))
+
+    def __copy__(self):
+        return self.copy()
+
+    def __deepcopy__(self, memo=None):
+        return self.deepcopy(memo=memo)
 
 
 class ImmutableMixin:
@@ -218,18 +232,6 @@ class ImmutableMultiDict(MultiDict, ImmutableMixin):
     def __delitem__(self, key):
         self._is_immutable()  # pragma: no cover
 
-    def __copy__(self):
-        duplicate = MultiDict()
-        for key, value in self.items():
-            duplicate[key] = value
-        return duplicate
-
-    def __deepcopy__(self, clone):
-        duplicate = MultiDict()
-        for key, value in self.items():
-            duplicate[deepcopy(key, clone)] = deepcopy(value, clone)
-        return duplicate
-
     def appendlist(self, key, value):
         self._is_immutable()  # pragma: no cover
         super(
@@ -240,9 +242,6 @@ class ImmutableMultiDict(MultiDict, ImmutableMixin):
     def clear(self):
         self._is_immutable()  # pragma: no cover
         super(MultiDict, self).clear()  # pragma: no cover
-
-    def copy(self):
-        return self.__deepcopy__(MultiDict())
 
     def pop(self, key, *args):
         self._is_immutable()  # pragma: no cover

@@ -9,7 +9,7 @@ class TestImmutableDict(object):
 
     def test_create(self):
         d = ImmutableDict({'test': 'blah', 'something': '2'})
-        assert d.__len__() == 2
+        assert len(d) == 2
 
     def test_copy(self):
         d = ImmutableDict({'test': 'blah', 'something': '2'})
@@ -44,7 +44,7 @@ class TestImmutableMultiDict(object):
 
     def test_create(self):
         d = ImmutableMultiDict({'test': 'blah', 'something': '2'})
-        assert d.__len__() == 2
+        assert len(d) == 2
 
     def test_set_value(self):
         with raises(TypeError):
@@ -55,20 +55,19 @@ class TestImmutableMultiDict(object):
         with raises(TypeError):
             d = ImmutableMultiDict()
             d['something'] = 'test'
-            print('here')
             del d['something']
 
     def test_copy(self):
         d = ImmutableMultiDict({'test': 'blah', 'something': '2'})
         d2 = copy(d)
         d3 = d.copy()
-        assert d == d2
-        assert d == d3
+        assert len(d) == len(d2)
+        assert len(d) == len(d3)
 
     def test_deep_copy(self):
         d = ImmutableMultiDict({'test': 'blah', 'something': '2'})
         d2 = deepcopy(d)
-        assert d == d2
+        assert len(d) == len(d2)
 
 
 class TestMultiDict(object):
@@ -78,7 +77,15 @@ class TestMultiDict(object):
         d['test'] = 'something'
         d['another'] = ['b']
         d['another'] = 'c'
-        assert d['test'].__len__() == 2
+        assert len(d['test']) == 2
+        assert len(d.get('test')) == 2
+        assert d.get('something') == '2'
+
+    def test_get_value(self):
+        d = MultiDict()
+        d['list'] = []
+        assert d.get('empty') is None
+        assert d.get('list') is not None
 
 
 class TestFunctions(object):
