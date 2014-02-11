@@ -2,7 +2,10 @@
 from importlib import import_module
 
 
-def load_definition_from_string(qualified_module):
+definition_lookup = {}
+
+
+def load_definition_from_string(qualified_module, cache=True):
     """Load a definition based on a fully qualified string.
 
     Returns:
@@ -15,13 +18,16 @@ def load_definition_from_string(qualified_module):
         definition = load_definition_from_string('watson.http.messages.Request')
         request = definition()
     """
+    if qualified_module in definition_lookup and cache:
+        return definition_lookup[qualified_module]
     parts = qualified_module.split('.')
     try:
         module = import_module('.'.join(parts[:-1]))
         obj = getattr(module, parts[-1:][0])
+        definition_lookup[qualified_module] = obj
         return obj
     except ImportError:
-        return None
+        raise
 
 
 def get_qualified_name(obj):

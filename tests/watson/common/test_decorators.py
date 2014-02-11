@@ -14,5 +14,6 @@ class TestCachedDecorator(object):
 
         c = MyClass()
         assert c.expensive_prop == 'This is an expensive call'
-        del c.expensive_prop
+        assert hasattr(c, '_expensive_prop')
+        del c._expensive_prop
         assert not hasattr(c, '_expensive_prop')

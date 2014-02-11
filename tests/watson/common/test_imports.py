@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from pytest import raises
 from watson.common import imports
 from tests.watson.common.support import some_func
 
@@ -17,5 +18,5 @@ class TestImports(object):
         assert isinstance(data, dict)
 
     def test_load_invalid_definition(self):
-        assert None == imports.load_definition_from_string(
-            'invalid.module.Class')
+        with raises(ImportError):
+            imports.load_definition_from_string('invalid.module.Class')

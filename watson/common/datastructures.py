@@ -80,6 +80,11 @@ class MultiDict(dict):
         print(multi_dict)  # {'one': [1, 'itchi']}
     """
 
+    def __init__(self, args=None):
+        items = args.items() if isinstance(args, dict) else args or ()
+        for key, value in items:
+            self.set(key, value)
+
     def set(self, key, value, replace=False):
         """Add a new item to the dictionary.
 
@@ -112,6 +117,9 @@ class MultiDict(dict):
                 existing.append(value)
                 value = existing
         dict.__setitem__(self, key, value)
+
+    def __getitem__(self, key, default=None):
+        return self.get(key, default)
 
     def update(self, a_dict):
         for key, value in a_dict.items():

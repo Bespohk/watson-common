@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from functools import update_wrapper
-
-
-def cached_property(func):
+class cached_property(object):
 
     """Allows expensive property calls to be cached.
+
+    Once the property is called, it's result is stored in the corresponding
+    property name prefixed with an underscore.
 
     Example:
 
@@ -18,20 +18,16 @@ def cached_property(func):
         klass = MyClass()
         klass.expensive_call  # initial call is made
         klass.expensive_call  # return value is retrieved from an internal cache
+        del klass._expensive_call
     """
-    prop = '_{name}'.format(name=func.__name__)
 
-    def _get_property(self):
-        try:
-            value = getattr(self, prop)
-        except AttributeError:
-            value = func(self)
-            setattr(self, prop, value)
-        return value
+    def __init__(self, func):
+        self.__name__ = func.__name__
+        self.__doc__ = func.__doc__
+        self.key = '_{name}'.format(name=self.__name__)
+        self.func = func
 
-    update_wrapper(_get_property, func)
-
-    def _del_property(self):
-        delattr(self, prop)
-
-    return property(_get_property, None, _del_property)
+    def __get__(self, obj, type=None):
+        if self.key not in obj.__dict__:
+            obj.__dict__[self.key] = self.func(obj)
+        return obj.__dict__[self.key]
