@@ -96,6 +96,33 @@ class TestFunctions(object):
         merged = dict_deep_update(d1, d2)
         assert merged['a']['b'] == 4
 
+    def test_complex_deep(self):
+        d1 = {
+            'a': {
+                'b': {
+                    'key': [
+                        'a',
+                        'b',
+                        'c',
+                        'd',
+                    ]
+                }
+            }
+        }
+        d2 = {
+            'a': {
+                'b': {
+                    'key': [
+                        'e',
+                        'f',
+                        'g',
+                    ]
+                }
+            }
+        }
+        merged = dict_deep_update(d1, d2)
+        assert 'c' in merged['a']['b']['key']
+
     def test_dict_deep_update_not_dict(self):
         d1 = {'a': {'b': 3}}
         d2 = 'b'
