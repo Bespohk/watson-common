@@ -60,7 +60,7 @@ def deserialize(obj, class_, attributes, strategies=None, snakecase=True,
     """
     deserialized = class_()
     for attr in attributes:
-        value = obj[attr]
+        value = obj.get(attr)
         if value is None:
             continue
         if strategies and attr in strategies:

@@ -39,6 +39,13 @@ class TestSerialize(object):
                                        'date': support.date_serialize})
         assert isinstance(d['dataDict']['test']['date'], str)
 
+    def test_none_attribute(self):
+        obj = support.MyObject('test')
+        d = json.serialize(obj,
+                           ('name', 'date'),
+                           strategies={'date': support.date_serialize})
+        assert 'date' not in d
+
 
 class TestDeserialize(object):
     def test_basic(self):
@@ -55,3 +62,9 @@ class TestDeserialize(object):
                                attributes=('name', 'date'),
                                strategies={'date': support.date_deserialize})
         assert isinstance(obj.date, datetime)
+
+    def test_none_attribute(self):
+        d = {'name': 'test'}
+        obj = json.deserialize(d, class_=support.MyObject,
+                               attributes=('name', 'date'))
+        assert not obj.date

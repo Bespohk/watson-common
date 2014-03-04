@@ -30,8 +30,8 @@ def dict_deep_update(d1, d2):
         else:
             try:
                 result[k] = deepcopy(v)
-            except:
-                result[k] = copy(v)
+            except:  # pragma: no cover
+                result[k] = copy(v)  # pragma: no cover
     return result
 
 

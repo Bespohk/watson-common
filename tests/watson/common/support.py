@@ -35,6 +35,12 @@ def data_dict_serialize(value, **kwargs):
         for k, v in value.items()}
 
 
+class CopyableClass(object):
+
+    def __copy__(self):
+        return 'CopyableClass'
+
+
 class MyObject(object):
     name = None
     date = None

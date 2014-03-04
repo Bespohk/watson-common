@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from xml.etree.ElementTree import Element, SubElement, tostring
 
+__all__ = ['to_string', 'from_dict']
+
 
 def to_string(xml, encoding='utf-8', xml_declaration=False):
     """Outputs an xml.etree.ElementTree.Element object to a string.
@@ -17,6 +19,27 @@ def to_string(xml, encoding='utf-8', xml_declaration=False):
         encoding=encoding)
     string = tostring(xml).decode(encoding)
     return '{0}{1}'.format(declaration if xml_declaration else '', string)
+
+
+def __dict_to_xml(obj, node_name=None, parent_element=None):
+        # internal processing for from_dict
+        if not isinstance(parent_element, Element):
+            if isinstance(obj, dict) and len(obj) == 1:
+                node_name, obj = obj.popitem()
+            parent_element = Element(node_name)
+        if isinstance(obj, dict):
+            for key, value in obj.items():
+                if isinstance(value, (list, tuple)):
+                    __dict_to_xml(value, key, parent_element)
+                else:
+                    __dict_to_xml(value, key, SubElement(parent_element, key))
+        elif isinstance(obj, (list, tuple)):
+            for value in obj:
+                sub_element = SubElement(parent_element, node_name)
+                __dict_to_xml(value, node_name, sub_element)
+        else:
+            parent_element.text = obj
+        return parent_element
 
 
 def from_dict(obj, node_name='root'):
@@ -42,24 +65,4 @@ def from_dict(obj, node_name='root'):
         node_name (string): the initial node name in case there are multiple
                             top level elements.
     """
-    def __dict_to_xml(obj, node_name=None, parent_element=None):
-        # internal processing for from_dict
-        if not isinstance(parent_element, Element):
-            if isinstance(obj, dict) and len(obj) == 1:
-                node_name, obj = obj.popitem()
-            parent_element = Element(node_name)
-        if isinstance(obj, dict):
-            for key, value in obj.items():
-                if isinstance(value, (list, tuple)):
-                    __dict_to_xml(value, key, parent_element)
-                else:
-                    __dict_to_xml(value, key, SubElement(parent_element, key))
-        elif isinstance(obj, (list, tuple)):
-            for value in obj:
-                sub_element = SubElement(parent_element, node_name)
-                __dict_to_xml(value, node_name, sub_element)
-        else:
-            parent_element.text = obj
-        return parent_element
-
     return __dict_to_xml(obj, node_name)

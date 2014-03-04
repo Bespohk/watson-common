@@ -51,5 +51,5 @@ def get_qualified_name(obj):
     try:
         module = obj.__module__
         return '{0}.{1}'.format(module, name)
-    except:
-        return name
+    except:  # pragma: no cover
+        return name  # pragma: no cover

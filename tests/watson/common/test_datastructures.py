@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
-from pytest import raises
-from watson.common.datastructures import ImmutableDict, ImmutableMultiDict
-from watson.common.datastructures import MultiDict, dict_deep_update
 from copy import copy, deepcopy
+import re
+from pytest import raises
+from watson.common.datastructures import (ImmutableDict, ImmutableMultiDict,
+                                          MultiDict, dict_deep_update,
+                                          module_to_dict)
+from tests.watson.common import support
 
 
 class TestImmutableDict(object):
@@ -87,6 +90,17 @@ class TestMultiDict(object):
         assert d.get('empty') is None
         assert d.get('list') is not None
 
+    def test_update(self):
+        d = MultiDict()
+        d.update({'test': 'test'})
+        assert 'test' in d
+
+    def test_set_replace(self):
+        d = MultiDict({'test': 'blah'})
+        assert d['test'] == 'blah'
+        d.set('test', 'testing', replace=True)
+        assert d['test'] == 'testing'
+
 
 class TestFunctions(object):
 
@@ -123,8 +137,19 @@ class TestFunctions(object):
         merged = dict_deep_update(d1, d2)
         assert 'c' in merged['a']['b']['key']
 
+    def test_deepcopy_invalid_copy(self):
+        pattern = re.compile('test')
+        d = {'re': pattern}
+        new_dict = dict_deep_update(d, {'test': 'testing'})
+        assert 'test' in new_dict
+        assert new_dict['re'] is pattern
+
     def test_dict_deep_update_not_dict(self):
         d1 = {'a': {'b': 3}}
         d2 = 'b'
         merged = dict_deep_update(d1, d2)
         assert merged == 'b'
+
+    def test_module_to_dict(self):
+        d = module_to_dict(support, '__')
+        assert 'DATA' in d

@@ -20,3 +20,7 @@ class TestImports(object):
     def test_load_invalid_definition(self):
         with raises(ImportError):
             imports.load_definition_from_string('invalid.module.Class')
+
+    def test_from_cache(self):
+        imports.load_definition_from_string('tests.watson.common.support.DATA')
+        assert 'tests.watson.common.support.DATA' in imports.definition_lookup
