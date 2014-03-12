@@ -60,6 +60,9 @@ def deserialize(obj, class_, attributes, strategies=None, snakecase=True,
     """
     deserialized = class_()
     for attr in attributes:
+        if snakecase:
+            # camelcase the required attr
+            attr = strings.camelcase(attr, uppercase=False)
         value = obj.get(attr)
         if value is None:
             continue

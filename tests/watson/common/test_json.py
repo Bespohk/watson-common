@@ -68,3 +68,10 @@ class TestDeserialize(object):
         obj = json.deserialize(d, class_=support.MyObject,
                                attributes=('name', 'date'))
         assert not obj.date
+
+    def test_deserialize_camel_to_snake(self):
+        d = {'name': 'test', 'dateTime': 'now'}
+        obj = json.deserialize(
+            d, class_=support.MyObject, attributes=('name', 'date_time'))
+        assert obj.date_time == 'now'
+        assert obj.name == 'test'
