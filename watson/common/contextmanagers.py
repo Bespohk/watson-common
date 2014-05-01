@@ -27,7 +27,7 @@ except:
                 pass
 
             # use this:
-            with ignored(Exception):
+            with suppress(Exception):
                 do_something()
         """
         try:

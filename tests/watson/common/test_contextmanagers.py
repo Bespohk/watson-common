@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from watson.common.contextmanagers import ignored
+from watson.common.contextmanagers import suppress
 
 
 def test_ignored_exception():
-    with ignored(Exception):
+    with suppress(Exception):
         raise Exception
     assert True
