@@ -122,8 +122,13 @@ class MultiDict(dict):
         return self.get(key, default)
 
     def update(self, a_dict):
-        for key, value in a_dict.items():
-            self[key] = value
+        items = a_dict.items() if isinstance(a_dict, dict) else a_dict
+        for key, value in items:
+            if isinstance(value, (tuple, list)):
+                for value in value:
+                    self[key] = value
+            else:
+                self[key] = value
 
     def copy(self):
         return self.__class__(self)
