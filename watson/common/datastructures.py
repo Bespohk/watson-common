@@ -35,6 +35,23 @@ def dict_deep_update(d1, d2):
     return result
 
 
+def merge_dicts(*dicts):
+    """Merges multiple dictionaries and returns a single new dict.
+
+    Unlike dict.update this will create a new dict.
+
+    Args:
+        dicts (list): The dicts that are being merged
+
+    Returns:
+        dict: A new dict containing the merged dicts
+    """
+    merged = {}
+    for d in dicts:
+        merged = dict_deep_update(merged, d)
+    return merged
+
+
 def module_to_dict(module, ignore_starts_with=''):
 
     """Load the contents of a module into a dict.

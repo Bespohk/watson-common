@@ -4,7 +4,7 @@ import re
 from pytest import raises
 from watson.common.datastructures import (ImmutableDict, ImmutableMultiDict,
                                           MultiDict, dict_deep_update,
-                                          module_to_dict)
+                                          module_to_dict, merge_dicts)
 from tests.watson.common import support
 
 
@@ -101,6 +101,11 @@ class TestMultiDict(object):
         d.set('test', 'testing', replace=True)
         assert d['test'] == 'testing'
 
+    def test_child_list(self):
+        d = MultiDict()
+        d.update({'test': ('value', 'another')})
+        assert len(d['test']) == 2
+
 
 class TestFunctions(object):
 
@@ -153,3 +158,10 @@ class TestFunctions(object):
     def test_module_to_dict(self):
         d = module_to_dict(support, '__')
         assert 'DATA' in d
+
+    def test_merge_dicts(self):
+        d1 = {'test': 1}
+        d2 = {'test2': 2}
+        d3 = {'test3': 3}
+        merged = merge_dicts(d1, d2, d3)
+        assert merged['test3']
