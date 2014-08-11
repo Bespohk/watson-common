@@ -16,3 +16,9 @@ class TestStrings(object):
 
     def test_url_safe(self):
         assert strings.url_safe('Test Ing') == 'test-ing'
+
+    def test_pluralize(self):
+        assert strings.pluralize('test') == 'tests'
+        assert strings.pluralize('agency') == 'agencies'
+        assert strings.pluralize('students') == 'students'
+        assert strings.pluralize('address') == 'addresses'

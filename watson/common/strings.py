@@ -48,3 +48,20 @@ def snakecase(string):
     string = re.sub(r'([A-Z]+)([A-Z][a-z])', r'\1_\2', string)
     string = re.sub(r'([a-z\d])([A-Z])', r'\1_\2', string)
     return string.replace('-', '_').lower()
+
+
+plurals = (
+    (r'(?i)(ss)$', r'\1es'),
+    (r'(?i)(s)$', r'\1'),
+    (r'y$', r'ies'),
+    (r'$', r's')
+)
+
+
+def pluralize(string):
+    """Returns the plural of a string.
+    """
+    for pattern, replacement in plurals:
+        if re.search(pattern, string):
+            return re.sub(pattern, replacement, string)
+    return string
