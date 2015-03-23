@@ -35,5 +35,5 @@ except:
         except exceptions:
             pass
 
-    # Deprecated
-    ignored = suppress
+# Deprecated
+ignored = suppress
