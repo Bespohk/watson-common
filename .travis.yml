@@ -1,12 +1,16 @@
 language: python
 python:
-    - 3.3
+  - 3.3
+  - 3.4
 install:
-    - pip install -r requirements-test.txt --use-mirrors
-    - pip install -r requirements.txt --use-mirrors
+  - pip install -r requirements-test.txt --use-mirrors
+  - pip install -r requirements.txt --use-mirrors
 before_script:
-    - mkdir -p tests/_coverage
+  - mkdir -p tests/_coverage
 script:
-    - py.test tests/ --cov watson --cov-report term-missing
+  - py.test tests/ --cov watson --cov-report term-missing
 after_success:
-    - coveralls --verbose
+  - coveralls --verbose
+notifications:
+  slack:
+    secure: EXUBTzebeNXbWbenk9Ai2Vz6rehNyoXgoeX8I/JnDrUhwwwvTSke2Bz3aUR+n4MpJxNBF26CcmHldKc2jR3fBqnSf20PEN4HvAehrBuTGpMdyMUWVlG9N+4bvoTG13cIimlCkcjY4Hw7LcxxIam3s4prFiXxem+rSbn+xhK/HaQ=
