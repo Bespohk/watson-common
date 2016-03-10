@@ -50,6 +50,14 @@ def snakecase(string):
     return string.replace('-', '_').lower()
 
 
+def hyphenate(string):
+    """Converts a camelCase to hyphenated words.
+    """
+    string = re.sub(r'([A-Z]+)([A-Z][a-z])', r'\1-\2', string)
+    string = re.sub(r'([a-z\d])([A-Z])', r'\1-\2', string)
+    return string.lower()
+
+
 plurals = (
     (r'(?i)(ss)$', r'\1es'),
     (r'(?i)(s)$', r'\1'),

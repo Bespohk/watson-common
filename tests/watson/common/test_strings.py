@@ -14,6 +14,9 @@ class TestStrings(object):
     def test_underscore(self):
         assert strings.snakecase('SomethingElse') == 'something_else'
 
+    def test_hyphenate(self):
+        assert strings.hyphenate('somethingElse') == 'something-else'
+
     def test_url_safe(self):
         assert strings.url_safe('Test Ing') == 'test-ing'
 
