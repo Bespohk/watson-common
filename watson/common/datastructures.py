@@ -129,6 +129,7 @@ class MultiDict(dict):
         if key in self:
             try:
                 self[key].append(value)
+                value = self[key]
             except:
                 existing = [self[key]]
                 existing.append(value)
