@@ -38,7 +38,7 @@ def __dict_to_xml(obj, node_name=None, parent_element=None):
                 sub_element = SubElement(parent_element, node_name)
                 __dict_to_xml(value, node_name, sub_element)
         else:
-            parent_element.text = obj
+            parent_element.text = str(obj)
         return parent_element
 
 
