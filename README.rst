@@ -24,9 +24,5 @@ Requirements
    :target: https://travis-ci.org/watsonpy/watson-common
 .. |Coverage Status| image:: https://coveralls.io/repos/watsonpy/watson-common/badge.png
    :target: https://coveralls.io/r/watsonpy/watson-common
-.. |Version| image:: http://badge.kloud51.com/pypi/v/watson-common.png
-   :target: https://pypi.python.org/pypi/watson-common/
-.. |Downloads| image:: http://badge.kloud51.com/pypi/d/watson-common.png
-   :target: https://pypi.python.org/pypi/watson-common/
-.. |Licence| image:: http://badge.kloud51.com/pypi/license/watson-common.png
+.. |Version| image:: https://img.shields.io/pypi/v/watson-common.svg?maxAge=2592000
    :target: https://pypi.python.org/pypi/watson-common/
