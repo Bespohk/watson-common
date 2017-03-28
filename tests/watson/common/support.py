@@ -51,3 +51,10 @@ class MyObject(object):
     def __init__(self, name=None, date=None):
         self.name = name
         self.date = date
+
+
+class NestedObject(object):
+    nested = None
+
+    def __init__(self, nested):
+        self.nested = nested

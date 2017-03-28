@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
+import json as stdlib_json
 from tests.watson.common import support
 from watson.common import json
 
@@ -75,3 +76,45 @@ class TestDeserialize(object):
             d, class_=support.MyObject, attributes=('name', 'date_time'))
         assert obj.date_time == 'now'
         assert obj.name == 'test'
+
+
+class TestEncoder(object):
+    def test_encode_standard_obj(self):
+        pass
+
+    def test_encode_class(self):
+        obj = support.MyObject(name='Test')
+        serialized = stdlib_json.dumps(obj, cls=json.JSONEncoder)
+        assert serialized == '{}'
+        encoder = json.JSONEncoder()
+        serialized = encoder.encode(
+            obj,
+            mapping={
+                support.MyObject: {
+                    'attributes': ('name',)
+                }
+            })
+        assert serialized == '{"name": "Test"}'
+
+    def test_encode_class_nested(self):
+        nested = support.NestedObject(support.MyObject(name='Test'))
+        encoder = json.JSONEncoder()
+        serialized = encoder.encode(
+            nested,
+            mapping={
+                support.NestedObject: {
+                    'attributes': ('nested',)
+                },
+                support.MyObject: {
+                    'attributes': ('name',)
+                }
+            })
+        assert serialized == '{"nested": {"name": "Test"}}'
+
+    def test_encode_types(self):
+        obj = [{'date': datetime.now()}]
+        encoder = json.JSONEncoder()
+        serialized = encoder.encode(obj, mapping={
+            datetime: support.date_serialize
+        })
+        assert '"date":' in serialized and '/' in serialized

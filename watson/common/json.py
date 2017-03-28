@@ -1,5 +1,57 @@
 # -*- coding: utf-8 -*-
+import json
+import inspect
 from watson.common import strings
+
+
+class JSONEncoder(json.JSONEncoder):
+    """Extends the original JSONEncoder to allow for serializing classes.
+
+    Example:
+
+    .. code-block:: python
+
+        class MyClass(object):
+            attr = 'Value'
+
+        c = MyClass()
+        encoder = JSONEncoder()
+        encoder.encode(c, mapping={MyClass: 'attributes': ('attr',)})
+        # {"attr": "Value"}
+
+        obj = {"date": datetime.now()}
+        encode.encode(obj, mapping={datetime: lambda x: x.strftime('%d/%m/%Y')})
+        # {"date": "D/M/Y"}
+
+    """
+    _mapping = None
+
+    @property
+    def mapping(self):
+        if not self._mapping:
+            self.mapping = {}
+        return self._mapping
+
+    @mapping.setter
+    def mapping(self, mapping):
+        self._mapping = mapping
+
+    def default(self, o):
+        _type = type(o)
+        if inspect.isclass(_type):
+            mapping = self.mapping.get(o.__class__, {})
+            if isinstance(mapping, dict):
+                return serialize(
+                    o,
+                    attributes=mapping.get('attributes', ()),
+                    strategies=mapping.get('strategies', {}))
+            elif mapping:
+                return mapping(o)
+        return json.JSONEncoder.default(self, o)
+
+    def encode(self, o, mapping=None):
+        self.mapping = mapping
+        return super(JSONEncoder, self).encode(o)
 
 
 def serialize(obj, attributes, strategies=None, camelcase=True, **kwargs):
