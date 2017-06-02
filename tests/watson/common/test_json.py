@@ -6,6 +6,7 @@ from watson.common import json
 
 
 class TestSerialize(object):
+
     def test_basic(self):
         obj = support.MyObject('test')
         d = json.serialize(obj, ('name',))
@@ -25,8 +26,8 @@ class TestSerialize(object):
         ]
         d = json.serialize(obj, ('name', 'date', 'data_list'),
                            strategies={
-                                       'data_list': support.data_list_serialize,
-                                       'date': support.date_serialize})
+            'data_list': support.data_list_serialize,
+            'date': support.date_serialize})
         assert isinstance(d['dataList'][0]['date'], str)
 
     def test_dict(self):
@@ -49,6 +50,7 @@ class TestSerialize(object):
 
 
 class TestDeserialize(object):
+
     def test_basic(self):
         d = {'name': 'test'}
         obj = json.deserialize(d, class_=support.MyObject,
@@ -79,8 +81,23 @@ class TestDeserialize(object):
 
 
 class TestEncoder(object):
-    def test_encode_standard_obj(self):
-        pass
+
+    def test_encode_dict(self):
+        data = {
+            'some_attribute': 'value',
+            'nested': {
+                'some_attribute': 'value'
+            },
+            'nested_list': [
+                {'some_attribute': 'test'},
+                'test'
+            ]
+        }
+        encoder = json.JSONEncoder()
+        snake_case = encoder.encode(data, camelcase=False)
+        camel_case = encoder.encode(data)
+        assert 'some_attribute' in snake_case
+        assert 'someAttribute' in camel_case
 
     def test_encode_class(self):
         obj = support.MyObject(name='Test')

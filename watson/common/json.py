@@ -25,6 +25,7 @@ class JSONEncoder(json.JSONEncoder):
 
     """
     _mapping = None
+    camelcase = False
 
     @property
     def mapping(self):
@@ -44,13 +45,33 @@ class JSONEncoder(json.JSONEncoder):
                 return serialize(
                     o,
                     attributes=mapping.get('attributes', ()),
-                    strategies=mapping.get('strategies', {}))
+                    strategies=mapping.get('strategies', {}),
+                    camelcase=self.camelcase)
             elif mapping:
                 return mapping(o)
         return json.JSONEncoder.default(self, o)
 
-    def encode(self, o, mapping=None):
+    def _camelize_attributes(self, o):
+        if isinstance(o, dict):
+            new_o = {}
+            for attr in o:
+                camelized_attr = strings.camelcase(attr, uppercase=False)
+                new_o[camelized_attr] = self._camelize(o[attr])
+            return new_o
+        return o
+
+    def _camelize(self, o):
+        if isinstance(o, (list, tuple)):
+            for i in range(len(o)):
+                o[i] = self._camelize_attributes(o[i])
+        return self._camelize_attributes(o)
+
+    def encode(self, o, mapping=None, camelcase=True):
+        # This is potentially a little slow, could use some improvements
         self.mapping = mapping
+        self.camelcase = camelcase
+        if camelcase:
+            o = self._camelize(o)
         return super(JSONEncoder, self).encode(o)
 
 
