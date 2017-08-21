@@ -42,6 +42,8 @@ class JSONEncoder(json.JSONEncoder):
         if inspect.isclass(_type):
             mapping = self.mapping.get(o.__class__, {})
             if isinstance(mapping, dict):
+                if hasattr(o, '__iter__') and not mapping:
+                    return [self.default(i) for i in o]
                 return serialize(
                     o,
                     attributes=mapping.get('attributes', ()),
@@ -49,6 +51,8 @@ class JSONEncoder(json.JSONEncoder):
                     camelcase=self.camelcase)
             elif mapping:
                 return mapping(o)
+            else:
+                return [self.default(i) for i in o]
         return json.JSONEncoder.default(self, o)
 
     def _camelize_attributes(self, o):
