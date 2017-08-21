@@ -51,8 +51,6 @@ class JSONEncoder(json.JSONEncoder):
                     camelcase=self.camelcase)
             elif mapping:
                 return mapping(o)
-            else:
-                return [self.default(i) for i in o]
         return json.JSONEncoder.default(self, o)
 
     def _camelize_attributes(self, o):
