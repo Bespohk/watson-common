@@ -20,7 +20,7 @@ def dict_deep_update(d1, d2):
         return d2
     try:
         result = deepcopy(d1)
-    except:
+    except Exception:
         result = copy(d1)
     for k, v in d2.items():
         if k in result and isinstance(result[k], dict):
@@ -30,7 +30,7 @@ def dict_deep_update(d1, d2):
         else:
             try:
                 result[k] = deepcopy(v)
-            except:  # pragma: no cover
+            except Exception:  # pragma: no cover
                 result[k] = copy(v)  # pragma: no cover
     return result
 
@@ -130,7 +130,7 @@ class MultiDict(dict):
             try:
                 self[key].append(value)
                 value = self[key]
-            except:
+            except Exception:
                 existing = [self[key]]
                 existing.append(value)
                 value = existing

@@ -46,10 +46,10 @@ def get_qualified_name(obj):
     except AttributeError:
         try:
             name = obj.__class__.__name__
-        except:  # pragma: no cover
+        except Exception:  # pragma: no cover
             name = obj.__name__  # pragma: no cover
     try:
         module = obj.__module__
         return '{0}.{1}'.format(module, name)
-    except:  # pragma: no cover
+    except Exception:  # pragma: no cover
         return name  # pragma: no cover

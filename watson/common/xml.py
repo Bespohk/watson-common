@@ -22,24 +22,24 @@ def to_string(xml, encoding='utf-8', xml_declaration=False):
 
 
 def __dict_to_xml(obj, node_name=None, parent_element=None):
-        # internal processing for from_dict
-        if not isinstance(parent_element, Element):
-            if isinstance(obj, dict) and len(obj) == 1:
-                node_name, obj = obj.popitem()
-            parent_element = Element(node_name)
-        if isinstance(obj, dict):
-            for key, value in obj.items():
-                if isinstance(value, (list, tuple)):
-                    __dict_to_xml(value, key, parent_element)
-                else:
-                    __dict_to_xml(value, key, SubElement(parent_element, key))
-        elif isinstance(obj, (list, tuple)):
-            for value in obj:
-                sub_element = SubElement(parent_element, node_name)
-                __dict_to_xml(value, node_name, sub_element)
-        else:
-            parent_element.text = str(obj)
-        return parent_element
+    # internal processing for from_dict
+    if not isinstance(parent_element, Element):
+        if isinstance(obj, dict) and len(obj) == 1:
+            node_name, obj = obj.popitem()
+        parent_element = Element(node_name)
+    if isinstance(obj, dict):
+        for key, value in obj.items():
+            if isinstance(value, (list, tuple)):
+                __dict_to_xml(value, key, parent_element)
+            else:
+                __dict_to_xml(value, key, SubElement(parent_element, key))
+    elif isinstance(obj, (list, tuple)):
+        for value in obj:
+            sub_element = SubElement(parent_element, node_name)
+            __dict_to_xml(value, node_name, sub_element)
+    else:
+        parent_element.text = str(obj)
+    return parent_element
 
 
 def from_dict(obj, node_name='root'):

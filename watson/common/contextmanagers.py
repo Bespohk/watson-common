@@ -3,7 +3,7 @@ from contextlib import contextmanager
 
 try:
     from contextlib import suppress
-except:
+except ImportError:
     @contextmanager
     def suppress(*exceptions):
         """Provides the ability to not have to write try/catch blocks when just
